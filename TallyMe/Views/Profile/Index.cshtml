@@ -1,0 +1,243 @@
+﻿
+@using Newtonsoft.Json;
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>个人中心</title>
+    <script src="~/node_modules/jquery/dist/jquery.min.js"></script>
+    <link href="~/Content/CSS/write_report.css" rel="stylesheet" />
+    <link href="~/Content/CSS/calendar.css" rel="stylesheet" />
+    <link href="~/node_modules/animate.css/animate.min.css" rel="stylesheet" />
+    <link href="~/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/node_modules/bootstrap/dist/css/bootstrap-reboot.min.css" rel="stylesheet" />
+    <link href="~/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="~/Scripts/jquery-1.7.1.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/MyAjaxForm.js"></script>
+    <link href="~/Content/CSS/reset.css" rel="stylesheet" />
+    <link href="~/Content/CSS/style.css" rel="stylesheet" />
+    <script src="~/Scripts/calendar.js"></script>
+
+    <style>
+        #div1 {
+            position: absolute;
+            width: 500px;
+            height: 600px;
+            left: 50%;
+            top: 24%;
+            margin-left: -250px;
+            margin-top: -100px;
+            background-image: url('../../Content/Images/timg.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        #div2 {
+            position: absolute;
+            left: 50%;
+            top: 20%;
+            height: 600px;
+            margin-left: -150px;
+            margin-top: -100px;
+        }
+
+        tr, td {
+            font-family: "微软雅黑";
+            font-size: 25px;
+            color: #000000;
+            height: 60px;
+        }
+    </style>
+</head>
+
+<body class="body-color">
+    <!--导航栏nav-->
+    <div class="container-fluid">
+        <div class="row cgf-nav-style">
+            <nav class="navbar navbar-expand-lg navbar-light  col-md-12 pl-md-5 ml-md-5 ">
+                <a class="navbar-brand text-white fa fa-calendar pl-md-5 ml-md-5" href="#">记账通</a>
+                <button class="navbar-toggler text-white" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon text-white"></span>
+                </button>
+                <div class="collapse navbar-collapse cgf-nav-list pl-md-5" id="navbarNavDropdown" style="font-size:18px">
+                    <ul class="navbar-nav pl-md-5">
+                        <li class="nav-item active cgf-nav-item ml-md-5">
+                            <a class="nav-link text-white fa fa-home" href="../Tally/Index">
+                                首页
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item cgf-nav-item ml-md-5">
+                            <a class="nav-link text-white pl-md-5 fa fa-table" href="../Daily/Index">报表</a>
+                        </li>
+                        <li class="nav-item cgf-nav-item ml-md-5">
+                            <a class="nav-link text-white pl-md-5 fa fa-calculator" href="../Budget/Index">预算</a>
+                        </li>
+                        <li class="nav-item cgf-nav-item ml-md-5">
+                            <a class="nav-link text-white pl-md-5 fa fa-mobile-phone" href="../Analyse/Index">分析</a>
+                        </li>
+                        <li class="nav-item dropdown cgf-nav-item ml-md-5">
+                            <a class="nav-link dropdown-toggle text-white pl-md-5 fa fa-user cgf-link-style" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                @User.Identity.Name
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="/Login/SignOut">退出登录</a>
+                                <a class="dropdown-item" href="/Profile/Index">个人信息</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!--导航栏nav结束-->
+    <div id="div1">
+        <img src="@ViewData["PicUrl"]" style="width:80px;height:150px;" />
+        <div id="div2">
+            @using (Ajax.BeginForm("SetProfile", "Profile", new AjaxOptions() { HttpMethod = "POST" }, new { id = "addForm" }))
+            {
+            <table>
+                <h1 class="text-center">个人信息</h1>
+                <tr>
+                    <td width="100">用户名:</td>
+                    <td><input type="text" readonly="readonly" value="@ViewData["Name"]" name="Name" id="Name" class="form-control"></td>
+                </tr>
+                <tr>
+                    <td>密码:</td>
+                    <td><input type="password" value="@ViewData["Pwd"]" name="Pwd" class="form-control"></td>
+                </tr>
+                <tr>
+                    <td>性别:</td>
+                    <td>
+                        @Html.RadioButton("Sex", 0) <label for="Sex0">男</label>
+                        @Html.RadioButton("Sex", 1) <label for="Sex1">女</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>电话:</td>
+                    <td><input type="text" value="@ViewData["PhoneNum"]" name="PhoneNum" class="form-control"></td>
+                </tr>
+                <tr>
+                    <td>邮箱:</td>
+                    <td><input type="text" value="@ViewData["Email"]" name="Email" class="form-control"></td>
+                </tr>
+                <tr>
+                    <td>地址:</td>
+                    <td>@Html.DropDownList("Abode")</td>
+                </tr>
+                <tr>
+                    <td>生日:</td>
+                    <td>
+                        <div class="calendarWarp" style="">
+                            <input type="text" value="@ViewData["Birthday"]" name="date" class='ECalendar form-control' id="ECalendar_case1" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>上传图片</td>
+                    <td>
+                        <input type="file" name="MenuIcon" id="imgIcon" /><input type="button" id="btnUpload" value="异步上传" />
+                        <input type="hidden" id="hidImage" name="ImagePath" />
+                        <div id="menuIconShow"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="submit" value="保存" />
+                    </td>
+                    <td>
+                        <input type="button" value="清空记账记录" onclick="resetRecord(this)" />
+                    </td>
+                </tr>
+            </table>
+            }
+        </div>
+    </div>
+</body>
+</html>
+
+<script type="text/javascript">
+    $(function () {
+        $("#ECalendar_case1").ECalendar({
+            type: "date",
+            skin: "#233",
+            offset: [0, 2]
+        });
+
+    })
+    function SubForm() {
+        $("#addForm").submit();
+    }
+
+    $(function () {
+        bindFileUpload();
+    });
+    //文件异步上传
+    function bindFileUpload() {
+        $("#btnUpload").click(function () {
+            if ($("#imgIcon").val() == "") {
+                alert("请选择图片文件");
+                return;
+            }
+
+            $("#addForm").ajaxSubmit({
+                type: "POST",
+                url: '/Profile/FileUpload',
+                success: function (data) {  //成功后执行的回调函数
+                    alert("hi");
+                    var serverData = data.split(':');
+                    if (serverData[0] == "ok") {
+                        $("#hidImage").attr("value", serverData[1]);//将服务端返回的图片路径赋给隐藏域
+                        $("#menuIconShow").append("<img src='" + serverData[1] + "' width='40px' height='40px' />"); //展示小图片
+                    } else {
+                        alert("图片上传错误!");
+                    }
+                }
+            });
+        });
+    }
+
+
+    function informSucc() {
+        alert("保存成功!");
+    }
+    function resetRecord() {
+        let name = $('#Name').val();
+
+        if (confirm("确认要清空信息?")) {
+            $.ajax({
+                type: 'Post',
+                url: '/Profile/ResetRecord',
+                data:
+                    {
+                        name: name
+                    },
+                success: function (data) {
+                    alert("重置完成!");
+                },
+                error: function () {
+                    console.log('请求服务器失败');
+                }
+            })
+        }
+        else {
+            return;
+        }
+
+    }
+
+
+</script>

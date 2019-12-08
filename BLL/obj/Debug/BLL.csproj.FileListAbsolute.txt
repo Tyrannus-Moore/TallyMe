@@ -1,0 +1,17 @@
+C:\Users\61040\source\repos\TallyMe\BLL\bin\Debug\BLL.dll
+C:\Users\61040\source\repos\TallyMe\BLL\bin\Debug\BLL.pdb
+C:\Users\61040\source\repos\TallyMe\BLL\obj\Debug\BLL.csproj.CoreCompileInputs.cache
+C:\Users\61040\source\repos\TallyMe\BLL\obj\Debug\BLL.dll
+C:\Users\61040\source\repos\TallyMe\BLL\obj\Debug\BLL.pdb
+C:\Users\61040\source\repos\TallyMe\BLL\obj\Debug\BLL.csprojResolveAssemblyReference.cache
+C:\Users\61040\source\repos\TallyMe\BLL\bin\Debug\DAL.dll
+C:\Users\61040\source\repos\TallyMe\BLL\bin\Debug\DAL.pdb
+C:\Users\61040\source\repos\TallyMe\BLL\obj\Debug\BLL.csproj.CopyComplete
+C:\Users\61040\source\repos\TallyMe\BLL\bin\Debug\Model.dll
+C:\Users\61040\source\repos\TallyMe\BLL\bin\Debug\EntityFramework.dll
+C:\Users\61040\source\repos\TallyMe\BLL\bin\Debug\Model.pdb
+C:\Users\61040\source\repos\TallyMe\BLL\bin\Debug\Model.dll.config
+C:\Users\61040\source\repos\TallyMe\BLL\bin\Debug\EntityFramework.xml
+C:\Users\61040\source\repos\TallyMe\BLL\bin\Debug\zh-Hans\EntityFramework.resources.dll
+C:\Users\61040\source\repos\TallyMe\BLL\bin\Debug\EPPlus.dll
+C:\Users\61040\source\repos\TallyMe\BLL\bin\Debug\EPPlus.xml

@@ -1,0 +1,682 @@
+﻿@using Newtonsoft.Json;
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en" style="height: 100%">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>记账</title>
+    <script src="~/node_modules/jquery/dist/jquery.min.js"></script>
+    <link href="~/Content/CSS/write_report.css" rel="stylesheet" />
+    <link href="~/Content/CSS/calendar.css" rel="stylesheet" />
+    <link href="~/node_modules/animate.css/animate.min.css" rel="stylesheet" />
+    <link href="~/node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/node_modules/bootstrap/dist/css/bootstrap-reboot.min.css" rel="stylesheet" />
+    <link href="~/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="~/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="~/Scripts/calendar.js"></script>
+    <script src="~/Scripts/echarts.js"></script>
+</head>
+
+<body class="body-color">
+    <!--导航栏nav-->
+    <div class="container-fluid">
+        <div class="row cgf-nav-style">
+            <nav class="navbar navbar-expand-lg navbar-light  col-md-12 pl-md-5 ml-md-5 ">
+                <a class="navbar-brand text-white fa fa-calendar pl-md-5 ml-md-5" href="#">记账通</a>
+                <button class="navbar-toggler text-white" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon text-white"></span>
+                </button>
+                <div class="collapse navbar-collapse cgf-nav-list pl-md-5" id="navbarNavDropdown" style="font-size:18px">
+                    <ul class="navbar-nav pl-md-5">
+                        <li class="nav-item active cgf-nav-item ml-md-5">
+                            <a class="nav-link text-white fa fa-home" href="../Tally/Index">
+                                首页
+                                <span class="sr-only">(current)</span>
+                            </a>
+                        </li>
+                        <li class="nav-item cgf-nav-item ml-md-5">
+                            <a class="nav-link text-white pl-md-5 fa fa-table" href="../Daily/Index">报表</a>
+                        </li>
+                        <li class="nav-item cgf-nav-item ml-md-5">
+                            <a class="nav-link text-white pl-md-5 fa fa-calculator" href="../Budget/Index">预算</a>
+                        </li>
+                        <li class="nav-item cgf-nav-item ml-md-5">
+                            <a class="nav-link text-white pl-md-5 fa fa-mobile-phone" href="../Analyse/Index">分析</a>
+                        </li>
+                        <li class="nav-item dropdown cgf-nav-item ml-md-5">
+                            <a class="nav-link dropdown-toggle text-white pl-md-5 fa fa-user cgf-link-style" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                               aria-haspopup="true" aria-expanded="false">
+                                @User.Identity.Name
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="/Login/SignOut">退出登录</a>
+                                <a class="dropdown-item" href="/Profile/Index">个人信息</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <!--导航栏nav结束-->
+    <div class="container cgf-container bg-white">
+        <div class="row pt-md-3">
+            <div class="col-md-8 col-sm-12">
+                <div class="btn-group-lg col-md-12" role="group" aria-label="Basic example">
+
+                    @for (int i = 5; i >= 0; i--)
+                    {
+                        if((Convert.ToInt32(ViewData["currentDay"]) - i) > 0)
+                        {
+                            <a href='?date=@(ViewData["currentYearMonth"].ToString())@(Convert.ToInt32(ViewData["currentDay"]) - i)' class="btn cgf-btn-commonColor cgf-alter-time" data-dateYM="@(ViewData["currentYearMonth"].ToString())" data-dateTime="@((Convert.ToInt32(ViewData["currentDay"])-i).ToString())">@(Convert.ToInt32(ViewData["currentDay"]) - i)</a>
+                        }
+                        else
+                        {
+                            @*<a href='?date=@(ViewData["pCurrentYearMonth"].ToString())@(Convert.ToInt32(ViewData["currentDay"]) - i + Convert.ToInt32(ViewData["pDays"]))' class="btn cgf-btn-commonColor cgf-alter-time" data-dateYM="@(ViewData["pCurrentYearMonth"].ToString())" data-dateTime="@((Convert.ToInt32(ViewData["currentDay"])-i +Convert.ToInt32(ViewData["pDays"])).ToString())">@(Convert.ToInt32(ViewData["currentDay"]) - i + Convert.ToInt32(ViewData["pDays"]))</a>*@
+                        }
+                    }
+
+
+                    <button type="button" class="btn  cgf-btn-commonColor">
+                        <div class="case">
+                            <div class="calendarWarp" style="">
+                                <input type="text" name="date" class='ECalendar' id="ECalendar_case1" value="" />
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                <div class="col-md-12">
+                    <div id="accordion">
+
+                        <div class="card">
+                            <div class="card-header" id="headingTwo">
+                                <h5 class="mb-0 text-center">
+                                    <button class="btn btn-primary collapsed cgf-btn-easyColor" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false"
+                                            aria-controls="collapseTwo">
+                                        记一笔
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                <div class="card-body">
+                                    <div class="input-group mb-3 col-md-12">
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-outline-secondary" type="button">金额:</button>
+                                        </div>
+                                        <input type="text" name="Amount" class="form-control amount" placeholder="" aria-label="" aria-describedby="basic-addon1">
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-outline-secondary fa fa-calculator" type="button"></button>
+                                        </div>
+                                    </div>
+
+                                    <div class="btn-toolbar ">
+                                        <div class="btn-group  col-md-12 btn-group-lg">
+
+
+                                            <button class="btn cgf-btn-list col-md-2 category" name="ClassId" value="1">餐饮饮食</button>
+                                            <button class="btn cgf-btn-list col-md-2 category" name="ClassId" value="2">水果零食</button>
+                                            <button class="btn cgf-btn-list col-md-2 category" name="ClassId" value="3">日常用品</button>
+                                            <button class="btn cgf-btn-list col-md-2 category" name="ClassId" value="4">柴米油盐</button>
+                                            <button class="btn cgf-btn-list col-md-2 category" name="ClassId" value="5">物业水电</button>
+                                            <button class="btn cgf-btn-list col-md-2 category" name="ClassId" value="6">医疗保健</button>
+
+
+                                        </div>
+                                        <div class="btn-group btn-group-lg mt-md-1 col-md-12">
+
+                                            <button class="btn cgf-btn-list col-md-2 category" name="ClassId" value="7">交通费</button>
+                                            <button class="btn cgf-btn-list col-md-2 category" name="ClassId" value="8">话费网费</button>
+                                            <button class="btn cgf-btn-list col-md-2 category" name="ClassId" value="9">养车费</button>
+                                            <button class="btn cgf-btn-list col-md-2 category" name="ClassId" value="10">旅行娱乐</button>
+                                            <button class="btn cgf-btn-list col-md-2 category" name="ClassId" value="11">博彩彩票</button>
+                                            <button class="btn cgf-btn-list col-md-2 category" name="ClassId" value="12">书报音像</button>
+
+
+                                        </div>
+                                        <div class="btn-group btn-group-lg mt-md-1 col-md-12">
+
+
+                                            <button class="btn cgf-btn-list col-md-2 category" name="ClassId" value="13">数码产品</button>
+                                            <button class="btn cgf-btn-list col-md-2 category" name="ClassId" value="14">教育培训</button>
+                                            <button class="btn cgf-btn-list col-md-2 category" name="ClassId" value="15">服饰装扮</button>
+                                            <button class="btn cgf-btn-list col-md-2 category" name="ClassId" value="16">化妆美容</button>
+                                            <button class="btn cgf-btn-list col-md-2 category" name="ClassId" value="17">人际往来</button>
+                                            <button class="btn cgf-btn-list col-md-2 category" name="ClassId" value="18">礼品礼金</button>
+
+                                        </div>
+                                        <div class="btn-group btn-group-lg mt-md-1 col-md-12">
+
+
+                                            <button class="btn cgf-btn-list col-md-2 category" name="ClassId" value="19">孝敬长辈</button>
+                                            <button class="btn cgf-btn-list col-md-2 category" name="ClassId" value="20">房产房车</button>
+                                            <button class="btn cgf-btn-list col-md-2 category" name="ClassId" value="21">投资亏损</button>
+                                            <button class="btn cgf-btn-list col-md-2 category" name="ClassId" value="22">电器家具</button>
+                                            <button class="btn cgf-btn-list col-md-2 category" name="ClassId" value="23">其他...</button>
+                                            <button class="btn cgf-btn-list col-md-2 category" name="ClassId" value="24">收入+</button>
+
+                                        </div>
+                                        <!---->
+                                        <div class="input-group-append input-group-lg mb-md-3 col-lg-12 mt-2">
+                                            <div class="input-group-prepend col-md-2">
+                                                <button class="btn btn-outline-secondary fa fa-camera" type="button"></button>
+                                            </div>
+                                            <input type="text" class="form-control col-md-6 write_value" placeholder="备注,限20个汉字以内(可不填)" aria-label="" aria-describedby="basic-addon1" name="Note">
+                                            <div class="input-group-prepend col-md-4">
+                                                <button class="btn btn-outline-dark  cgf-btn-easyColor btnSub" type="button">记一笔</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!--记账底部的表格开始-->
+                <div class="col-md-12">
+                    <table class="table table-hover  table-bordered border-info col-md-12 text-center">
+                        <tr class="bg-dark text-white-50 text-center">
+                            <th>来源</th>
+                            <th>类别</th>
+                            <th>类型</th>
+                            <th>金额</th>
+                            <th class="border border-right-0">备注</th>
+                            <th class="border border-left-0"></th>
+                        </tr>
+                        <!--表格内容的数据-->
+
+                        @if (ViewData["briefList"] != null)
+                        {
+                            foreach (var bill in (IQueryable<Model.Bill>)ViewData["briefList"])
+                            {
+                                <tr data-toggle="collapse" class="cgf-collapse-head" index="@bill.Id">
+                                    <td>官网</td>
+                                    <td>@(bill.PaymentType == true ? "支出" : "收入")</td>
+                                    <td category-id="@bill.ClassId">@bill.Class.Name</td>
+                                    <td>@(Math.Round((decimal)bill.Amount, 2))</td>
+                                    <td class="border border-right-0">@bill.Note</td>
+                                    <td><span class="cgf-collpase-span"></span></td>
+                                </tr>
+                            }
+                        }
+
+                    </table>
+                </div>
+                <!--记账底部的表格结束-->
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <!--第一张统计表-->
+                <div id="container1" style="height:500px;" class="col-md-12 bg-light pl-md-5"></div>
+                <!--第二张统计表-->
+                <div id="container2" style="height:400px;" class="col-md-12 bg-light pl-md-5"></div>
+            </div>
+
+        </div>
+
+    </div>
+    <script>
+        @*$(function () {
+            var data = new Array();
+            var content = @Html.Raw(JsonConvert.SerializeObject(ViewData["quartlyData"]));
+                $.each(content, function (i, item) {
+                    data.push(new Array(item["ItemA"], item["ItemB"], item["ItemC"], item["ItemD"]));
+                });
+        })*@
+        //当前时间的月份
+        let now_date = new Date();
+        let now_date_month = now_date.getMonth() + 1;
+        let now_date_months = [now_date_month, now_date_month - 1, now_date_month - 2, now_date_month-3];
+        //let date_value = new Date().toLocaleDateString();
+        var dates = null;
+        
+        //var now_time = new Date();
+        //now_time = now_time.toLocaleDateString().replace(/\//g, '-');
+        var now_time = @Html.Raw(JsonConvert.SerializeObject(ViewData["currentYearMonth"].ToString() + ViewData["currentDay"].ToString())) 
+        //alert(now_time);
+        $('#ECalendar_case1').val(now_time);
+        let date_value = now_time;//保存选中日历的日期时间
+        let date_select = now_time;
+        /*日历插件脚本代码*/
+        $(function () {
+            $("#ECalendar_case1").ECalendar({
+                type: "date",
+                skin: "#233",
+                stamp: false,
+                format: "yyyy-mm-dd",
+                offset: [0, 2],
+                callback: function (v, e) {
+                    date_value = v;
+                    dates = new Date(v)
+                    dates1=parseInt(dates.getFullYear()) + '-' + parseInt((dates.getMonth() + 1)) + '-' + parseInt(dates.getDate());
+
+                    //alert(date_value);
+                    window.location.href = "/Tally/Index?date=" + date_value;
+                    //$.ajax({
+                    //    type: "Get",
+                    //    url: "/Tally/Index?",
+                    //    data: { date: date_value },
+                    //    success: function (data) {
+                    //        alert("SUCCESSED");
+                    //        console.log(data);
+
+                    //    }
+                    //});
+                } //回调函数
+            });
+
+        })
+        //点击日期按钮改变时间
+        $('.cgf-alter-time').on('click', function () {
+            let dateTime = $(this).attr('data-dateTime');
+            let dateYM = $(this).attr('data-dateYM');
+            let date = dateYM + dateTime;
+
+            /*李林老师救命啊*/
+            $.ajax({
+                type: 'Post',
+                url: '/Tally/Index',
+                data: { date: date },
+                success: function (data) {
+                    console.log(data);
+                    $('#ECalendar_case1').val(date);
+                    setTimeout(function () {
+                        window.location.href = window.location.href;
+                    }, 1000)
+                },
+                error: function () {
+                    console.log('请求服务器失败');
+                }
+            })
+        });
+        /*图表1代码*/
+        //种类 数值
+        //let catagory = [
+        //    { name: '美食', number: '200' }, //使用at：来结束at作用域
+        //    { name: '蔬菜', number: '100' },
+        //    { name: '美食', number: '300' },
+        //    { name: '娱乐', number: '150' },
+        //    { name: '美食', number: '50' },
+        //]
+        
+        
+        //let jsons = [120, 200, 150, 80, 70];
+        var dom = document.getElementById("container1");
+        var myChart = echarts.init(dom);
+        var app = {};
+        option = null;
+        option = {
+            title: {
+                text: '本月消费状况',
+                subtext:'显示排名靠前的5类'
+            },
+            xAxis: {
+                type: 'category',
+                axisLabel: {
+                    interval: 0,    //强制文字产生间隔
+                    rotate: 45,     //文字逆时针旋转45°
+                    textStyle: {    //文字样式
+                        color: "black",
+                        fontSize: 13,
+                        fontFamily: 'Microsoft YaHei'
+                    }
+                },
+                data: @Html.Raw(JsonConvert.SerializeObject(ViewData["monthlyName"]))
+            },
+            grid: { // 控制图的大小，调整下面这些值就可以，
+                x: 10,
+                x2: 10,
+                y2: 150,// y2可以控制 X轴跟Zoom控件之间的间隔，避免以为倾斜后造成 label重叠到zoom上
+            },
+            yAxis: {
+                type: 'value',
+            },
+            series: [{
+                data: @Html.Raw(JsonConvert.SerializeObject(ViewData["monthlyAmount"])),
+                type: 'bar',
+                label: {
+                    normal: {
+                        show: true, //显示数字
+                        position: 'top',
+                        color: 'green'
+
+                    }
+                }
+            }]
+        };
+        if (option && typeof option === "object") {
+            myChart.setOption(option, true);
+        }
+
+        /*图表2代码 */
+
+        var dom1 = document.getElementById("container2");
+        var myChart1 = echarts.init(dom1);
+        var appOne = {};
+        optionOne = null;
+        appOne.title = '消费统计图表';
+
+        optionOne = {
+            title: {
+                text: '近4个月的消费情况',
+                subtext: '包括本月'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'shadow'
+                }
+            }/*,
+            legend: {
+                data: ['2011年', '2012年']
+            }*/,
+            grid: {
+                left:0,
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'value',
+                boundaryGap: [0, 0.01]
+            },
+            yAxis: {
+                type: 'category',
+                data: now_date_months
+            },
+            series: [
+                {
+                    name: '2018年',
+                    type: 'bar',
+                    data: @Html.Raw(JsonConvert.SerializeObject(ViewData["quartlyData"]))
+                }
+
+            ]
+        };
+        ;
+        if (optionOne && typeof optionOne === "object") {
+            myChart1.setOption(optionOne, true);
+        }
+
+
+        //list toggler../img/person1.jpg
+        var listToggle = `
+                            <tr id="" class=" toggle-view" >
+                                <td colspan="6">
+                                    <div>
+                                        <div class="card-body">
+
+                                            <div class="media">
+                                                <div class="media-left media-middle">
+                                                    <a href="#">
+                                                        <img class="media-object img-thumbnail" src="../Content/Images/person2.jpg" alt="...">
+                                                    </a>
+                                                </div>
+                                                <div class="media-body">
+
+                                                    <div class="card">
+                                                        <ul class="list-group list-group-flush col-md-12">
+                                                            <li class="list-group-item">
+                                                                <p class="float-left">记录环境：官网</p>
+                                                            </li>
+                                                            <li class="list-group-item">
+                                                                <div class="input-group">
+                                                                    <label for="exampleInputPassword1" class="col-form-label">金额：</label>
+                                                                    <input type="text" class="form-control number-value" id="exampleInputPassword1" value="">
+                                                                </div>
+                                                            </li>
+                                                            <li class="list-group-item">
+                                                                <div class="input-group">
+                                                                    <label for="exampleInputPassword1" class="col-form-label">说明：</label>
+                                                                    <input type="text" class="form-control shuoming-value" id="exampleInputPassword1" value="">
+                                                                </div>
+                                                            </li>
+                                                            <li class="list-group-item">
+
+                                                                    <div class="input-group">
+                                                                        <label for="inputGroupSelect01" class="col-form-label">分类：</label>
+                                                                        <select class="custom-select select-value" id="inputGroupSelect01">
+                                                                            <optgroup label="基本生活">
+                                                                                    <option value="1">餐饮饮食</option>
+                                                                                    <option value="2">水果零食</option>
+                                                                                    <option value="3">日常用品</option>
+                                                                                    <option value="4">柴米油盐</option>
+                                                                                    <option value="5">物业水电</option>
+                                                                                    <option value="6">医疗保健</option>
+                                                                            </optgroup>
+                                                                            <optgroup label="交通通讯">
+                                                                                    <option value="7">餐饮饮食</option>
+                                                                                    <option value="8">话费网费</option>
+                                                                                    <option value="9">养车费</option>
+
+
+                                                                            </optgroup>
+                                                                            <optgroup label="文化娱乐">
+                                                                                    <option value="10">旅游娱乐</option>
+                                                                                    <option value="11">博彩彩票</option>
+                                                                                    <option value="12">书报影像</option>
+                                                                                    <option value="13">数码产品</option>
+                                                                                    <option value="14">教育培训</option>
+
+                                                                            </optgroup>
+                                                                            <optgroup label="美容装扮">
+                                                                                    <option value="15">服饰装扮</option>
+                                                                                    <option value="16">化妆美容</option>
+
+
+                                                                            </optgroup>
+                                                                            <optgroup label="人际往来">
+                                                                                    <option value="17">人际往来</option>
+                                                                                    <option value="18">礼品礼金</option>
+                                                                                    <option value="19">孝敬长辈</option>
+
+
+                                                                            </optgroup>
+                                                                            <optgroup label="其他支出">
+                                                                                    <option value="20">房产车产</option>
+                                                                                    <option value="21">投资亏损</option>
+                                                                                    <option value="22">电器家居</option>
+                                                                                    <option value="23">其他...</option>
+                                                                            </optgroup>
+                                                                            <optgroup label="其他支出">
+                                                                                     <option value="24">收入</option>
+                                                                            </optgroup>
+
+                                                                        </select>
+
+
+                                                                    </div>
+
+
+
+
+
+                                                            </li>
+                                                            <li class="list-group-item">
+                                                                    <div class="input-group">
+                                                                            <label for="exampleInputPassword1" class="col-form-label">时间：</label>
+                                                                            <div class="case">
+                                                                                    <div class="calendarWarp" style="">
+                                                                                        <input type="text" name="date" class='ECalendar form-control ' id="ECalendar_case2" value="" />
+                                                                                    </div>
+                                                                                </div>
+                                                                        </div>
+
+                                                            </li>
+                                                            <li class="list-group-item">
+                                                                    <button type="button" class="btn btn-primary btn-sm btn-alter" name="alter">修改</button>
+                                                                    <button type="button" class="btn btn-secondary btn-sm btn-delete" name="delete">删除</button>
+                                                            </li>
+
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </td>
+
+                            </tr>`
+        //点击表格每行的箭头改变
+        var state = false;
+        var num = 1;
+        $('.cgf-collapse-head').hover(function () {
+            $(this).find('.cgf-collpase-span').toggleClass('fa fa-arrow-down');
+        });
+        $('.cgf-collapse-head').on('click',function () {
+            $(this).parent().find('.toggle-view').remove();
+
+
+            $(this).find('.cgf-collpase-span').delay(500).toggleClass('fa fa-arrow-down');
+            if (!state) {
+                $(this).after(listToggle);
+                //alert(date_value);
+                $("#ECalendar_case2").val(date_value);
+                var category=$('.select-value').val($(this).children().eq(2).attr('category-id'))
+                //var category = $('.select-value').val($(this).attr('index'));
+
+                var numberValue = $('.number-value').val(parseInt($(this).children().eq(3).text()));
+                //alert(numberValue);
+
+                var shuoming = $('.shuoming-value').val($(this).children().eq(4).text())
+                $("#ECalendar_case2").ECalendar({
+                    type: "time",
+                    stamp: false,
+                    skin: 5,
+                    format: "yyyy-mm-dd ",
+                    callback: function (v, e) {
+                        //alert(v);
+
+                        date_select = v;
+                    }
+                });
+                // 点击修改 这里需要返回
+                $(".btn-alter").on('click',function () {
+
+                    let id = $(this).parents('.toggle-view').prev('.cgf-collapse-head').eq(0).attr('index'); //该条记录所在数据库的id
+                    let date = date_select;//选择的时间日期
+                    let amount = $('.number-value').val();
+                    let classId = $('.select-value').val();
+                    let note = $('.shuoming-value').val();
+                    let paymentType = classId != 24 ? true : false;
+                    let values = {
+                        Id: id,
+                        PaymentType: paymentType,
+                        CreateDate: date,
+                        Amount: amount,
+                        ClassId: classId,
+                        Note: note
+                    }
+                    console.log(values);
+                    $.ajax({
+                        type: "Get",
+                        url: "/Tally/UpdateBill",
+                        data: values,
+                        success: function (data) {
+                            //console.log(data);
+                            alert('保存成功');
+                            //保存之刷新页面
+                            setTimeout(function () {
+                                window.location.href = window.location.href;
+                            },1000)
+
+
+                        }
+                    });
+                });
+                // 点击删除
+                $(".btn-delete").on('click',function () {
+                    //alert($(this).text())
+                    let id = $(this).parents('.toggle-view').prev('.cgf-collapse-head').eq(0).attr('index'); //该条记录所在数据库的id
+                    let date = date_select;//选择的时间日期
+                    let values = {
+                        Id: id,
+
+                    }
+                    console.log(values);
+                    if (confirm('确定删除?')) {
+                        $.ajax({
+                            type: "Get",
+                            url: "/Tally/DeleteBill",
+                            data: values,
+                            success: function (data) {
+                                //console.log(data);
+                                alert('删除成功');
+                                //保存之刷新页面
+                                setTimeout(function () {
+                                    window.location.href = window.location.href;
+                                }, 1000)
+                            }
+                        });
+                    }
+
+                });
+
+            }
+            else {
+                $(this).parent().find('.toggle-view').remove();
+            }
+            state = !state;
+        });
+
+
+        //btn
+        var btn_values = null;
+        $('.category').click(function () {
+            btn_values = $(this).val();
+            //alert(btn_values);
+        });
+        // 点击添加
+        $(".btnSub").click(function () {
+            let date = date_value;
+            let amount = $('.amount').val();
+            let classId = btn_values;
+            let note = $('.write_value').val();
+            let values = {
+                CreateDate: date,
+                Amount: amount,
+                ClassId: classId,
+                Note: note
+            }
+
+            var re = /^[0-9]+.?[0-9]*$/; //判断字符串是否为数字 //判断正整数 /^[1-9]+[0-9]*]*$/ 
+            　　if (!re.test(amount) || (amount<0)) {
+                　　　　alert("格式输入错误！");
+                　　　　$('.amount').val("");
+                　　　　return false;
+            　　}
+
+            $.ajax({
+                type: "Get",
+                url: "/Tally/CreateBill",
+                data: values,
+                success: function (data) {
+                    //console.log(data);
+                    setTimeout(function () {
+                        window.location.href = window.location.href;
+                    },1000)
+                    $('.write_value').val("");
+                    $('.amount').val("");
+                }
+            });
+        });
+
+
+    </script>
+
+</body>
+
+</html>

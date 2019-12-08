@@ -1,0 +1,14 @@
+C:\Users\61040\source\repos\TallyMe\Model\bin\Debug\Model.dll.config
+C:\Users\61040\source\repos\TallyMe\Model\bin\Debug\Model.dll
+C:\Users\61040\source\repos\TallyMe\Model\bin\Debug\Model.pdb
+C:\Users\61040\source\repos\TallyMe\Model\bin\Debug\EntityFramework.dll
+C:\Users\61040\source\repos\TallyMe\Model\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\61040\source\repos\TallyMe\Model\bin\Debug\EntityFramework.xml
+C:\Users\61040\source\repos\TallyMe\Model\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\61040\source\repos\TallyMe\Model\bin\Debug\zh-Hans\EntityFramework.resources.dll
+C:\Users\61040\source\repos\TallyMe\Model\obj\Debug\Model.csproj.CoreCompileInputs.cache
+C:\Users\61040\source\repos\TallyMe\Model\obj\Debug\Model.csproj.CopyComplete
+C:\Users\61040\source\repos\TallyMe\Model\obj\Debug\Model.dll
+C:\Users\61040\source\repos\TallyMe\Model\obj\Debug\Model.pdb
+C:\Users\61040\source\repos\TallyMe\Model\bin\Debug\zh-Hans\EntityFramework.SqlServer.resources.dll
+C:\Users\61040\source\repos\TallyMe\Model\obj\Debug\Model.csprojResolveAssemblyReference.cache

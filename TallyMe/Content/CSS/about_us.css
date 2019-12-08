@@ -1,0 +1,13 @@
+*{
+    margin:0;
+    padding:0;
+}
+.banners{
+    box-sizing: border-box;
+    width:100%;
+    height:230px;
+    margin:0;
+    background:url(../img/about-us1.png);
+    background-size: 100% 230px;
+    
+}

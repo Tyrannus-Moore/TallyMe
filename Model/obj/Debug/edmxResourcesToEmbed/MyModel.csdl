@@ -1,0 +1,194 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="TallyMeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="AdminRole">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="AdminSetting" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="Setting" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="AdminUser" Relationship="Self.FK_AdminUser_AdminRole" FromRole="AdminRole" ToRole="AdminUser" />
+  </EntityType>
+  <EntityType Name="AdminUser">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Pwd" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="AdminRoleId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="AdminRole" Relationship="Self.FK_AdminUser_AdminRole" FromRole="AdminUser" ToRole="AdminRole" />
+  </EntityType>
+  <EntityType Name="Bill">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PaymentType" Type="Boolean" Nullable="false" />
+    <Property Name="Amount" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="CreateDate" Type="DateTime" Precision="3" Nullable="false" />
+    <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="IsPic" Type="Boolean" />
+    <Property Name="PicUrl" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="TUserId" Type="Int32" />
+    <Property Name="ClassId" Type="Int32" />
+    <Property Name="MethodId" Type="Int32" />
+    <NavigationProperty Name="Class" Relationship="Self.FK_Bill_Class" FromRole="Bill" ToRole="Class" />
+    <NavigationProperty Name="Method" Relationship="Self.FK_Bill_Method" FromRole="Bill" ToRole="Method" />
+    <NavigationProperty Name="TUser" Relationship="Self.FK_Bill_TUser" FromRole="Bill" ToRole="TUser" />
+  </EntityType>
+  <EntityType Name="Class">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Bill" Relationship="Self.FK_Bill_Class" FromRole="Class" ToRole="Bill" />
+    <NavigationProperty Name="Budget" Relationship="TallyMeModel.FK_Budget_Class" FromRole="Class" ToRole="Budget" />
+  </EntityType>
+  <EntityType Name="Method">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Bill" Relationship="Self.FK_Bill_Method" FromRole="Method" ToRole="Bill" />
+  </EntityType>
+  <EntityType Name="TUser">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Pwd" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="Sex" Type="Boolean" />
+    <Property Name="PhoneNum" Type="String" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Abode" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Birthday" Type="DateTime" Precision="3" />
+    <Property Name="IsPic" Type="Boolean" />
+    <Property Name="PicUrl" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Bill" Relationship="Self.FK_Bill_TUser" FromRole="TUser" ToRole="Bill" />
+    <NavigationProperty Name="Budget" Relationship="TallyMeModel.FK_Budget_TUser" FromRole="TUser" ToRole="Budget" />
+  </EntityType>
+  <Association Name="FK_AdminUser_AdminRole">
+    <End Role="AdminRole" Type="Self.AdminRole" Multiplicity="1" />
+    <End Role="AdminUser" Type="Self.AdminUser" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AdminRole">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AdminUser">
+        <PropertyRef Name="AdminRoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Bill_Class">
+    <End Role="Class" Type="Self.Class" Multiplicity="0..1" />
+    <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Class">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Bill">
+        <PropertyRef Name="ClassId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Bill_Method">
+    <End Role="Method" Type="Self.Method" Multiplicity="0..1" />
+    <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Method">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Bill">
+        <PropertyRef Name="MethodId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Bill_TUser">
+    <End Role="TUser" Type="Self.TUser" Multiplicity="0..1" />
+    <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Bill">
+        <PropertyRef Name="TUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="MyContext" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="AdminRole" EntityType="Self.AdminRole" />
+    <EntitySet Name="AdminUser" EntityType="Self.AdminUser" />
+    <EntitySet Name="Bill" EntityType="Self.Bill" />
+    <EntitySet Name="Class" EntityType="Self.Class" />
+    <EntitySet Name="Method" EntityType="Self.Method" />
+    <EntitySet Name="TUser" EntityType="Self.TUser" />
+    <AssociationSet Name="FK_AdminUser_AdminRole" Association="Self.FK_AdminUser_AdminRole">
+      <End Role="AdminRole" EntitySet="AdminRole" />
+      <End Role="AdminUser" EntitySet="AdminUser" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Bill_Class" Association="Self.FK_Bill_Class">
+      <End Role="Class" EntitySet="Class" />
+      <End Role="Bill" EntitySet="Bill" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Bill_Method" Association="Self.FK_Bill_Method">
+      <End Role="Method" EntitySet="Method" />
+      <End Role="Bill" EntitySet="Bill" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Bill_TUser" Association="Self.FK_Bill_TUser">
+      <End Role="TUser" EntitySet="TUser" />
+      <End Role="Bill" EntitySet="Bill" />
+    </AssociationSet>
+    <EntitySet Name="Budget" EntityType="TallyMeModel.Budget" />
+    <AssociationSet Name="FK_Budget_Class" Association="TallyMeModel.FK_Budget_Class">
+      <End Role="Class" EntitySet="Class" />
+      <End Role="Budget" EntitySet="Budget" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Budget_TUser" Association="TallyMeModel.FK_Budget_TUser">
+      <End Role="TUser" EntitySet="TUser" />
+      <End Role="Budget" EntitySet="Budget" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Budget">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Amount" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="CreateMonth" Type="Int32" />
+    <Property Name="ClassId" Type="Int32" />
+    <Property Name="TUserId" Type="Int32" />
+    <NavigationProperty Name="Class" Relationship="TallyMeModel.FK_Budget_Class" FromRole="Budget" ToRole="Class" />
+    <NavigationProperty Name="TUser" Relationship="TallyMeModel.FK_Budget_TUser" FromRole="Budget" ToRole="TUser" />
+  </EntityType>
+  <Association Name="FK_Budget_Class">
+    <End Type="TallyMeModel.Class" Role="Class" Multiplicity="0..1" />
+    <End Type="TallyMeModel.Budget" Role="Budget" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Class">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Budget">
+        <PropertyRef Name="ClassId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Budget_TUser">
+    <End Type="TallyMeModel.TUser" Role="TUser" Multiplicity="0..1" />
+    <End Type="TallyMeModel.Budget" Role="Budget" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TUser">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Budget">
+        <PropertyRef Name="TUserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

@@ -1,0 +1,53 @@
+/*导航栏部分*/
+.cgf-nav-style{
+    background:#503017;
+    
+}
+.cgf-nav-list{
+    
+}
+.cgf-nav-item{
+    
+}
+.body-color{
+    background:#565656;
+}
+.cgf-btn-commonColor{
+    background:#914301;
+    color:#fff;
+}
+.cgf-btn-easyColor{
+    width:60%;
+    text-align: center;
+    margin:0 auto;
+}
+.cgf-btn-list{
+    background:#934602;
+    border:2px solid #fff;
+
+}
+.cgf-btn-list:hover{
+    /*box-shadow: 2px 2px 1px 2px red;*/
+    
+    background:hsla(27, 91%, 13%, 0.596);
+}
+.cgf-style-button{
+    background:lightslategray;
+    color:black;
+}
+.cgf-category{
+    background:gray;
+    color:#fff;
+    border-radius:5px;
+}
+
+.cgf-btn-listOne,.cgf-btn-listTwo,.cgf-btn-listThree,{
+    background:#934602 !important;
+    border:2px solid #fff;
+
+}
+.cgf-btn-listOne:hover,.cgf-btn-listTwo:hover,.cgf-btn-listThree:hover{
+    /*box-shadow: 2px 2px 1px 2px red;*/
+    
+    background:hsla(27, 91%, 13%, 0.596);
+}

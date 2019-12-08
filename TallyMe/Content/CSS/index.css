@@ -1,0 +1,31 @@
+body{
+    margin:0;
+    padding:0;
+}
+
+/*中间标题开始*/
+
+/*中间标题结束*/
+/*底部评论开始*/
+.contents-view{
+    border:1px solid rgb(240, 239, 233) !important;
+    padding:5px;
+    background:#FCF6DC;
+}
+.contents-view::before{
+    content:'';
+    top:-2px;
+    position:relative;
+    left:-30px;
+     font-size: 0;  
+    line-height: 0;  
+    border-width: 15px;  
+    border-color: #FCF6DC;  
+    border-right-width: solid;  
+    border-style: dashed;  
+    border-left-color:transparent;  
+    border-top-color: transparent;  
+    border-bottom-color: transparent;
+    
+}
+/*底部评论结束*/

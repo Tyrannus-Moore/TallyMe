@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f6e58870194b41348ad397699d1fcd68" Name="Diagram1" ZoomLevel="105">
+        <EntityTypeShape EntityType="TallyMeModel.AdminRole" Width="1.5" PointX="5.75" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TallyMeModel.AdminUser" Width="1.5" PointX="8" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TallyMeModel.Bill" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="TallyMeModel.Class" Width="1.5" PointX="0.75" PointY="1.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="TallyMeModel.Method" Width="1.5" PointX="0.75" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="TallyMeModel.TUser" Width="1.5" PointX="0.75" PointY="7.625" IsExpanded="true" />
+        <AssociationConnector Association="TallyMeModel.FK_AdminUser_AdminRole" ManuallyRouted="false" />
+        <AssociationConnector Association="TallyMeModel.FK_Bill_Class" ManuallyRouted="false" />
+        <AssociationConnector Association="TallyMeModel.FK_Bill_Method" ManuallyRouted="false" />
+        <AssociationConnector Association="TallyMeModel.FK_Bill_TUser" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="TallyMeModel.Budget" Width="1.5" PointX="7" PointY="5" />
+        <AssociationConnector Association="TallyMeModel.FK_Budget_Class" />
+        <AssociationConnector Association="TallyMeModel.FK_Budget_TUser" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

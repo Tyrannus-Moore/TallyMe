@@ -1,0 +1,135 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en" class="no-js">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>注册记账通</title>
+    <script src="~/Scripts/jquery-1.7.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+
+    <link href="~/Content/CSS/normalize.css" rel="stylesheet" />
+    <link href="~/Content/CSS/demo.css" rel="stylesheet" />
+    <!--必要样式-->
+    <link href="~/Content/CSS/component.css" rel="stylesheet" />
+    <!--[if IE]>
+    <script src="js/html5.js"></script>
+    <![endif]-->
+    <script type="text/javascript">
+        function changeCheckCode() {
+            $("#img").attr("src", $("#img").attr("src") + 1); //?id=1 -> 2换图片,浏览器将认为是新的请求
+        }
+
+        function checkUser() {
+            let userName = $("#LoginCode").val();
+            if (userName == "") {
+                return $("#errorMsg1").text("用户名不能为空!");
+            }
+            $.ajax({
+                type: 'Post',
+                url: '/Register/IsValid',
+                data:
+                    {
+                        userName: userName
+                    },
+                success: function (data) {
+                    if (data == "True") {
+                        $("#errorMsg1").text("用户名重复，换一个试试？");
+                    }
+                    else {
+                        $("#errorMsg1").text("");
+                    }
+                },
+                error: function () {
+                    console.log('请求服务器失败');
+                }
+            })
+        }
+
+        function checkPwd(data) {
+            let pwd1 = $("#LoginPwd1").val();
+            let pwd2 = $("#LoginPwd2").val();
+
+            if (pwd1 == "" || pwd2 == "") {
+                return $("#errorMsg2").text("密码不能为空!");
+            }
+
+            if (pwd1 != pwd2) {
+                $("#errorMsg2").text("两次密码不一致!");
+            }
+            else {
+                $("#errorMsg2").text("");
+            }
+        }
+
+        function afterRegister(data) {
+            $("#errorMsg0").text("");
+            $("#errorMsg1").text("");
+            $("#errorMsg2").text("");
+            var serverData = data.split(':'); // Controller 传来的数据ok:XXX no:XXX
+            if (serverData[0] == "ok") {
+                window.location.href = "/Tally/Index"
+            } else if (serverData[0] == "no0") {
+                $("#errorMsg0").text(serverData[1]);
+                changeCheckCode();
+            } else if (serverData[0] == "no1") {
+                $("#errorMsg1").text(serverData[1]);
+                changeCheckCode();
+            } else if (serverData[0] == "no2") {
+                $("#errorMsg2").text(serverData[1]);
+                changeCheckCode();
+            }
+            else {
+                $("#errorMsg").text("系统繁忙!");
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container demo-1">
+        <div class="content">
+            <div id="large-header" class="large-header">
+                <canvas id="demo-canvas"></canvas>
+                <div class="logo_box">
+                    <h3>欢迎加入记账通</h3>
+                    @using (Ajax.BeginForm("Register", "Register", new AjaxOptions() { OnSuccess = "afterRegister" }, new { name = "form0", id = "form0" }))
+                    {
+                        <div class="input_outer">
+                            <span class="u_user"></span>
+                            <input name="LoginCode" id="LoginCode" class="text" style="color: #FFFFFF !important" type="text" placeholder="请输入账户" onblur="checkUser(this)">
+                            <span id="errorMsg1"></span>
+                        </div>
+                        <div class="input_outer">
+                            <span class="us_uer"></span>
+                            <input name="LoginPwd1" id="LoginPwd1" class="text" style="color: #FFFFFF !important; position:absolute; z-index:100;" value="" type="password" placeholder="请输入密码" onblur="checkPwd(this)">
+                        </div>
+                        <div class="input_outer">
+                            <span class="us_uer"></span>
+                            <input name="LoginPwd2" id="LoginPwd2" class="text" style="color: #FFFFFF !important; position:absolute; z-index:100;" value="" type="password" placeholder="请确认密码" onblur="checkPwd(this)">
+                            <span id="errorMsg2"></span>
+                        </div>
+                        <div class="input_outer">
+                            <span class="us_uer"><img id="img" src="/Login/ValidateCode/?id=1" style="float: left; height: 24px; width:35px;" onclick="changeCheckCode();return false;" /></span>
+                            <input type="text" id="code" name="vCode" class="text" style="color: #FFFFFF !important; position:absolute; z-index:100;" value="" placeholder="请输入验证码" />
+                            <span id="errorMsg0"></span>
+                        </div>
+                        <div class="mb2"><input type="submit" id="btnLogin" value="注册" class="act-but submit" style="color: #FFFFFF;width:330px;" /></div>
+                    }
+                    <a href="/Login/Index" style="color:gold">我要去登录</a>
+                </div>
+            </div>
+        </div>
+    </div><!-- /container -->
+    <script src="~/Scripts/TweenLite.min.js"></script>
+    <script src="~/Scripts/EasePack.min.js"></script>
+    <script src="~/Scripts/rAF.js"></script>
+    <script src="~/Scripts/demo-1.js"></script>
+</body>
+</html>

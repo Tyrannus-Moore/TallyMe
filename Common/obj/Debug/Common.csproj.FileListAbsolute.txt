@@ -1,0 +1,6 @@
+C:\Users\61040\source\repos\TallyMe\Common\bin\Debug\Common.dll
+C:\Users\61040\source\repos\TallyMe\Common\bin\Debug\Common.pdb
+C:\Users\61040\source\repos\TallyMe\Common\obj\Debug\Common.csproj.CoreCompileInputs.cache
+C:\Users\61040\source\repos\TallyMe\Common\obj\Debug\Common.dll
+C:\Users\61040\source\repos\TallyMe\Common\obj\Debug\Common.pdb
+C:\Users\61040\source\repos\TallyMe\Common\obj\Debug\Common.csprojResolveAssemblyReference.cache
