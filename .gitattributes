@@ -1,5 +1,2 @@
 # Auto detect text files and perform LF normalization
 * text=auto
-*.js linguist-language=ASP.NET
-*.css linguist-language=ASP.NET
-*.html linguist-language=ASP.NET
