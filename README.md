@@ -1,8 +1,8 @@
 # TallyMe
  An appealing, easy-to-use account book system.
 ## Fuctions
-### 1. Login & Registration
-![image](https://github.com/Tyrannus-Moore/TallyMe/blob/master/Images/Login.gif)  
+### 1. Login & Registration  
+   ![image](https://github.com/Tyrannus-Moore/TallyMe/blob/master/Images/Login.gif)  
 
 ### 2. Tally(Bookkeeping)
    a. create a bill  
@@ -27,12 +27,12 @@
   e. display annual statement  
   ![image](https://github.com/Tyrannus-Moore/TallyMe/blob/master/Images/Daily-Anual-Report.gif)  
   
-### 4. Budget
-  a. set monthly budget
-  b. give warning once over budget
+### 4. Budget  
+  a. set monthly budget  
+  b. give warning once over budget  
   ![image](https://github.com/Tyrannus-Moore/TallyMe/blob/master/Images/Budget.gif) 
   
-### 5. Analyiss
-  a. generate user comsumption analysis and provide  advices
-  b. offer the link to download users record.
-  ![image](https://github.com/Tyrannus-Moore/TallyMe/blob/master/Images/Analysis.gif) 
+### 5. Analysis  
+  a. generate user comsumption analysis and provide  advices.  
+  b. offer the link to download users record.  
+  ![image](https://github.com/Tyrannus-Moore/TallyMe/blob/master/Images/Analysis.gif)   
