@@ -1,6 +1,6 @@
 # TallyMe
  An appealing, easy-to-use account book system.
-## Fuctions
+## Functions
 ### 1. Login & Registration  
    ![image](https://github.com/Tyrannus-Moore/TallyMe/blob/master/Images/Login.gif)  
 
